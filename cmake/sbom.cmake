@@ -526,6 +526,24 @@ endfunction()
 # Starts SBOM generation. Call sbom_add() and friends afterwards. End with sbom_finalize(). Input
 # files allow having variables and generator expressions.
 function(sbom_generate)
+	cmake_parse_arguments(_arg_sbom_gen "" "SPDX_VERSION" "" ${ARGN})
+
+	if(NOT DEFINED _arg_sbom_gen_SPDX_VERSION)
+		set(_arg_sbom_gen_SPDX_VERSION "2.3")
+		_sbom_log(STATUS "Using SPDX-Version 2.3")
+		_sbom_generate23(${_arg_sbom_gen_UNPARSED_ARGUMENTS})
+	else()
+		set(_arg_sbom_gen_SPDX_VERSION "3")
+		_sbom_log(STATUS "Using SPDX-Version 3")
+		_sbom_generate3(${_arg_sbom_gen_UNPARSED_ARGUMENTS})
+	endif()
+endfunction()
+
+function(_sbom_generate3)
+	_sbom_log(FATAL_ERROR "SPDX Version 3 is not yet implemented")
+endfunction()
+
+function(_sbom_generate23)
 	set(oneValueArgs
 		OUTPUT
 		NAMESPACE
